@@ -1,7 +1,8 @@
-package com.tundra.pllib.utils
+package io.github.tundraclimate.utils.container
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 class PlayerContainer(val owner: Player) {
@@ -16,8 +17,8 @@ class PlayerContainer(val owner: Player) {
         container.remove(key)
     }
 
-    fun getData(key: Any): Any? {
-        return container[key]
+    fun getData(key: Any): ContainerValue {
+        return ContainerValue(owner, container[key])
     }
 
     fun hasData(key: Any): Boolean {
@@ -38,5 +39,17 @@ class PlayerContainer(val owner: Player) {
 
     fun clearData() {
         container.clear()
+    }
+
+    fun forEach(action: (Map.Entry<Any, Any?>) -> Unit) {
+        container.forEach(action)
+    }
+
+    fun <R> map(action: (Map.Entry<Any, Any?>) -> R): List<R> {
+        return container.map(action)
+    }
+
+    fun filter(predicate: (Map.Entry<Any, Any?>) -> Boolean): Map<Any, Any?> {
+        return container.filter(predicate)
     }
 }
